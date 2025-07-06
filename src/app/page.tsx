@@ -6,7 +6,7 @@ interface NewsItem {
   _id: string;
   title: string;
   content: string;
-  sentiment: string;
+  sentiment: string | { label: string };
   date?: string;
 }
 
@@ -50,23 +50,25 @@ export default function Home() {
               <div className={styles["card-title"]}>{item.title}</div>
               <div className={styles["card-content"]}>{item.content}</div>
               <div>
-                <span
-                  className={
-                    styles["card-badge"] +
-                    " " +
-                    styles[
-                      item.sentiment === "positive"
-                        ? "positive"
-                        : item.sentiment === "negative"
-                        ? "negative"
-                        : "neutral"
-                    ]
+                {(() => {
+                  let label = "";
+                  if (typeof item.sentiment === "string") {
+                    label = item.sentiment;
+                  } else if (item.sentiment && typeof item.sentiment === "object" && "label" in item.sentiment) {
+                    label = item.sentiment.label;
                   }
-                >
-                  {item.sentiment === "positive" && "긍정"}
-                  {item.sentiment === "negative" && "부정"}
-                  {item.sentiment === "neutral" && "중립"}
-                </span>
+                  let badgeClass = styles["card-badge"] + " ";
+                  if (label === "positive") badgeClass += styles.positive;
+                  else if (label === "negative") badgeClass += styles.negative;
+                  else badgeClass += styles.neutral;
+                  return (
+                    <span className={badgeClass}>
+                      {label === "positive" && "긍정"}
+                      {label === "negative" && "부정"}
+                      {label === "neutral" && "중립"}
+                    </span>
+                  );
+                })()}
                 {item.date && (
                   <span className={styles["card-date"]}>{item.date}</span>
                 )}

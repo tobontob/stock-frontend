@@ -28,8 +28,12 @@ export default function Home() {
         if (!res.ok) throw new Error("API 요청 실패");
         const data = await res.json();
         setNews(data.news || data || []);
-      } catch (err: any) {
-        setError(err.message || "데이터를 불러오지 못했습니다.");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("데이터를 불러오지 못했습니다.");
+        }
       } finally {
         setLoading(false);
       }

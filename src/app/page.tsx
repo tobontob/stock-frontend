@@ -44,7 +44,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1>감정분석 뉴스 리스트</h1>
+        <h1 className={styles.title}>감정분석 뉴스 리스트</h1>
         {loading && <p>불러오는 중...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
         <div className={styles["card-list"]}>

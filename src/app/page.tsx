@@ -10,12 +10,6 @@ interface NewsItem {
   date?: string;
 }
 
-const sentimentColor = {
-  positive: "#4caf50",
-  negative: "#f44336",
-  neutral: "#9e9e9e",
-};
-
 export default function Home() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);

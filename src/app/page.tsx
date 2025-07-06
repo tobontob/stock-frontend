@@ -47,37 +47,34 @@ export default function Home() {
         <h1>감정분석 뉴스 리스트</h1>
         {loading && <p>불러오는 중...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
+        <div className={styles["card-list"]}>
           {news.map((item) => (
             <div
               key={item._id}
-              style={{
-                border: `2px solid ${sentimentColor[item.sentiment as keyof typeof sentimentColor] || "#ccc"}`,
-                borderRadius: 12,
-                padding: 20,
-                minWidth: 320,
-                maxWidth: 400,
-                background: "#fff",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-              }}
+              className={styles.card}
             >
-              <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 8 }}>{item.title}</div>
-              <div style={{ color: "#555", marginBottom: 12 }}>{item.content}</div>
+              <div className={styles["card-title"]}>{item.title}</div>
+              <div className={styles["card-content"]}>{item.content}</div>
               <div>
-                <span style={{
-                  color: "#fff",
-                  background: sentimentColor[item.sentiment as keyof typeof sentimentColor] || "#888",
-                  borderRadius: 8,
-                  padding: "4px 12px",
-                  fontWeight: 600,
-                  fontSize: 14,
-                }}>
+                <span
+                  className={
+                    styles["card-badge"] +
+                    " " +
+                    styles[
+                      item.sentiment === "positive"
+                        ? "positive"
+                        : item.sentiment === "negative"
+                        ? "negative"
+                        : "neutral"
+                    ]
+                  }
+                >
                   {item.sentiment === "positive" && "긍정"}
                   {item.sentiment === "negative" && "부정"}
                   {item.sentiment === "neutral" && "중립"}
                 </span>
                 {item.date && (
-                  <span style={{ marginLeft: 12, color: "#888", fontSize: 13 }}>{item.date}</span>
+                  <span className={styles["card-date"]}>{item.date}</span>
                 )}
               </div>
             </div>

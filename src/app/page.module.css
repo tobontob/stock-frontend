@@ -6,12 +6,13 @@
   --button-primary-hover: #383838;
   --button-secondary-hover: #f2f2f2;
 
+  background: #f5f6fa;
+  min-height: 100vh;
+  padding: 48px 0;
   display: grid;
   grid-template-rows: 20px 1fr 20px;
   align-items: center;
   justify-items: center;
-  min-height: 100svh;
-  padding: 80px;
   gap: 64px;
   font-family: var(--font-geist-sans);
 }
@@ -34,6 +35,7 @@
   flex-direction: column;
   gap: 32px;
   grid-row-start: 2;
+  color: #222;
 }
 
 .main ol {
@@ -170,3 +172,64 @@ a.secondary {
   }
 }
 */
+
+/* 카드 스타일 개선 */
+.card {
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 20px;
+  min-width: 320px;
+  max-width: 400px;
+  margin-bottom: 16px;
+  color: #222;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #111;
+}
+
+.card-content {
+  color: #444;
+  margin-bottom: 12px;
+}
+
+.card-badge {
+  color: #fff;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-block;
+}
+.card-badge.positive {
+  background: #2196f3;
+}
+.card-badge.negative {
+  background: #e53935;
+}
+.card-badge.neutral {
+  background: #757575;
+}
+
+.card-date {
+  margin-left: 12px;
+  color: #888;
+  font-size: 13px;
+}
+
+/* 카드 리스트 flex 스타일 */
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+h1 {
+  color: #111;
+  margin-bottom: 32px;
+}

@@ -179,14 +179,17 @@ export default function Home() {
               <h2>{(selected as NewsItem)!.title}</h2>
               <div style={{ marginBottom: 8, color: "#888" }}>{(selected as NewsItem)!.published?.replace("T", " ").slice(0, 19) ?? ""}</div>
               <div style={{ marginBottom: 16 }}>
-                <b>종목:</b> {(selected as NewsItem)!.related_stocks?.length && (selected as NewsItem)!.related_stocks.length > 0 ? (selected as NewsItem)!.related_stocks.map((s, idx) => (
-                  <span key={s.name + idx} style={{ marginRight: 8, display: "inline-flex", alignItems: "center" }}>
-                    {s.name}
-                    {s.direction === "상승" && <FaArrowUp style={{ color: "#2196f3", marginLeft: 4 }} title="상승" />}
-                    {s.direction === "하락" && <FaArrowDown style={{ color: "#e53935", marginLeft: 4 }} title="하락" />}
-                    {s.direction === "중립" && <FaRegDotCircle style={{ color: "#757575", marginLeft: 4 }} title="중립" />}
-                  </span>
-                )) : "-"}
+                <b>종목:</b>{" "}
+                {Array.isArray((selected as NewsItem)!.related_stocks) && (selected as NewsItem)!.related_stocks!.length > 0
+                  ? (selected as NewsItem)!.related_stocks!.map((s, idx) => (
+                      <span key={s.name + idx} style={{ marginRight: 8, display: "inline-flex", alignItems: "center" }}>
+                        {s.name}
+                        {s.direction === "상승" && <FaArrowUp style={{ color: "#2196f3", marginLeft: 4 }} title="상승" />}
+                        {s.direction === "하락" && <FaArrowDown style={{ color: "#e53935", marginLeft: 4 }} title="하락" />}
+                        {s.direction === "중립" && <FaRegDotCircle style={{ color: "#757575", marginLeft: 4 }} title="중립" />}
+                      </span>
+                    ))
+                  : "-"}
                 <br />
                 <b>감정:</b>{" "}
                 {typeof (selected as NewsItem)!.sentiment === "string"

@@ -75,11 +75,10 @@ export default function Home() {
               className={styles.card + " card"}
               key={item._id}
               onClick={() => setSelected(item)}
-              style={{ cursor: "pointer", flex: "1 1 22%", minWidth: 320, maxWidth: 400 }}
             >
               <div className={styles.cardTitle + " card-title"}>{item.title}</div>
               <div className={styles.cardContent + " card-content"}>
-                {item.related_stocks && item.related_stocks.length > 0 ? (
+                {Array.isArray(item.related_stocks) && item.related_stocks.length > 0 ? (
                   item.related_stocks.map((s, idx) => (
                     <span key={s.name + idx} style={{ marginRight: 8, display: "inline-flex", alignItems: "center" }}>
                       {s.name}
@@ -92,7 +91,7 @@ export default function Home() {
                   <span>-</span>
                 )}
               </div>
-              <div className={styles.cardDate + " card-date"}>{item.published ? item.published.replace("T", " ").slice(0, 19) : ""}</div>
+              <div className={styles.cardDate + " card-date"}>{item.published?.replace("T", " ").slice(0, 19) ?? ""}</div>
             </div>
           ))}
         </div>

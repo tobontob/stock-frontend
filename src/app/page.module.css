@@ -36,6 +36,8 @@
   gap: 32px;
   grid-row-start: 2;
   color: #222;
+  width: 100%;
+  align-items: stretch;
 }
 
 .main ol {
@@ -297,4 +299,8 @@ a.secondary {
   background: #e3f0fd;
   color: #2196f3;
   box-shadow: 0 2px 8px rgba(33,150,243,0.10);
+}
+
+.page_page__ZU32B {
+  width: 100%;
 }

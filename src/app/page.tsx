@@ -26,9 +26,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selected, setSelected] = useState<NewsItem | null>(null);
-  const [stockFilter, setStockFilter] = useState("");
-  const [sentimentFilter, setSentimentFilter] = useState("");
-  const [dateFilter, setDateFilter] = useState("");
   const PAGE_SIZE = 40;
   const [page, setPage] = useState(0);
 
@@ -55,36 +52,7 @@ export default function Home() {
     fetchNews();
   }, []);
 
-  // 필터링
-  const filteredNews = news.filter((item) => {
-    let pass = true;
-    if (stockFilter) {
-      pass = pass && !!(item.related_stocks && item.related_stocks.some(s => s.name.includes(stockFilter)));
-    }
-    if (sentimentFilter) {
-      const label = typeof item.sentiment === "string" ? item.sentiment : item.sentiment?.label;
-      pass = pass && label === sentimentFilter;
-    }
-    if (dateFilter) {
-      pass = pass && !!(item.published && item.published.startsWith(dateFilter));
-    }
-    return pass;
-  });
-
-  // 차트 데이터
-  const stockCount: Record<string, number> = {};
-  const sentimentCount: Record<string, number> = { positive: 0, negative: 0, neutral: 0 };
-  news.forEach(item => {
-    if (item.related_stocks) {
-      item.related_stocks.forEach(s => {
-        stockCount[s.name] = (stockCount[s.name] || 0) + 1;
-      });
-    }
-    const label = typeof item.sentiment === "string" ? item.sentiment : item.sentiment?.label;
-    if (label) sentimentCount[label] = (sentimentCount[label] || 0) + 1;
-  });
-
-  const pagedNews = filteredNews.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const pagedNews = news.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   function getSentimentLabel(sentiment: string | { label: string } | undefined): string {
     if (!sentiment) return "";
@@ -129,7 +97,7 @@ export default function Home() {
           ))}
         </div>
         <ReactPaginate
-          pageCount={Math.ceil(filteredNews.length / PAGE_SIZE)}
+          pageCount={Math.ceil(news.length / PAGE_SIZE)}
           pageRangeDisplayed={5}
           marginPagesDisplayed={1}
           onPageChange={({ selected }) => setPage(selected)}

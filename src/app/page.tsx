@@ -24,14 +24,12 @@ interface NewsItem {
 export default function Home() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [selected, setSelected] = useState<NewsItem | null>(null);
   const PAGE_SIZE = 40;
   const [page, setPage] = useState(0);
 
   const fetchNews = async () => {
     setLoading(true);
-    setError("");
     try {
       const res = await fetch("/api/news");
       if (!res.ok) throw new Error("API 요청 실패");
@@ -39,9 +37,9 @@ export default function Home() {
       setNews(data.news || []);
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(err.message);
+        console.error(err.message);
       } else {
-        setError("데이터를 불러오지 못했습니다.");
+        console.error("데이터를 불러오지 못했습니다.");
       }
     } finally {
       setLoading(false);

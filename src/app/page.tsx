@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-// @ts-expect-error
+// @ts-expect-error: react-icons type missing
 import { FaArrowUp, FaArrowDown, FaRegDotCircle } from "react-icons/fa";
-// @ts-expect-error
+// @ts-expect-error: react-paginate type missing
 import ReactPaginate from "react-paginate";
 
 interface RelatedStock {

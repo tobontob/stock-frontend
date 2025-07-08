@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-// @ts-ignore
+// @ts-expect-error
 import { FaArrowUp, FaArrowDown, FaRegDotCircle } from "react-icons/fa";
-// @ts-ignore
+// @ts-expect-error
 import ReactPaginate from "react-paginate";
 
 interface RelatedStock {

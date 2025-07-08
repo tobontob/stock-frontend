@@ -86,6 +86,13 @@ export default function Home() {
 
   const pagedNews = filteredNews.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
+  function getSentimentLabel(sentiment: string | { label: string } | undefined): string {
+    if (!sentiment) return "";
+    if (typeof sentiment === "string") return sentiment;
+    if (typeof sentiment === "object" && "label" in sentiment) return sentiment.label;
+    return "";
+  }
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -191,10 +198,7 @@ export default function Home() {
                     ))
                   : "-"}
                 <br />
-                <b>감정:</b>{" "}
-                {typeof (selected as NewsItem)!.sentiment === "string"
-                  ? (selected as NewsItem)!.sentiment
-                  : ((selected as NewsItem)!.sentiment as { label: string })?.label ?? ""}
+                <b>감정:</b> {getSentimentLabel((selected as NewsItem)!.sentiment)}
               </div>
               <div style={{ whiteSpace: "pre-line", marginBottom: 16 }}>{(selected as NewsItem)!.content}</div>
               {(selected as NewsItem)!.link && <a href={(selected as NewsItem)!.link} target="_blank" rel="noopener noreferrer" style={{ color: "#2196f3", textDecoration: "underline" }}>기사 원문보기</a>}

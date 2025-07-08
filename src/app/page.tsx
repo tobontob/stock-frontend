@@ -19,6 +19,7 @@ interface NewsItem {
   published?: string;
   related_stocks?: RelatedStock[];
   link?: string;
+  reason?: string;
 }
 
 export default function Home() {
@@ -124,7 +125,7 @@ export default function Home() {
                 <b>감정:</b> {getSentimentLabel((selected as NewsItem)!.sentiment)}
               </div>
               <div style={{ marginBottom: 16 }}>
-                <b>분석근거:</b> {(selected as any).reason || "분석 근거 데이터 없음"}
+                <b>분석근거:</b> {selected.reason || "분석 근거 데이터 없음"}
               </div>
               <div style={{ whiteSpace: "pre-line", marginBottom: 16 }}>{(selected as NewsItem)!.content}</div>
               {(selected as NewsItem)!.link && <a href={(selected as NewsItem)!.link} target="_blank" rel="noopener noreferrer" style={{ color: "#2196f3", textDecoration: "underline" }}>기사 원문보기</a>}

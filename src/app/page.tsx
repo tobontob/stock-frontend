@@ -16,6 +16,7 @@ interface NewsItem {
   sentiment: string | { label: string };
   published?: string;
   related_stocks?: RelatedStock[];
+  link?: string;
 }
 
 export default function Home() {
@@ -54,14 +55,14 @@ export default function Home() {
   const filteredNews = news.filter((item) => {
     let pass = true;
     if (stockFilter) {
-      pass = pass && item.related_stocks && item.related_stocks.some(s => s.name.includes(stockFilter));
+      pass = pass && !!(item.related_stocks && item.related_stocks.some(s => s.name.includes(stockFilter)));
     }
     if (sentimentFilter) {
       const label = typeof item.sentiment === "string" ? item.sentiment : item.sentiment?.label;
       pass = pass && label === sentimentFilter;
     }
     if (dateFilter) {
-      pass = pass && item.published && item.published.startsWith(dateFilter);
+      pass = pass && !!(item.published && item.published.startsWith(dateFilter));
     }
     return pass;
   });

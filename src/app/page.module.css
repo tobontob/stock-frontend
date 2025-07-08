@@ -176,64 +176,67 @@ a.secondary {
 /* 카드 스타일 개선 */
 .card {
   background: #fff;
-  border: 2px solid #ddd;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  padding: 20px;
-  min-width: 320px;
-  max-width: 400px;
-  margin-bottom: 16px;
-  color: #222;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 28px 24px 20px 24px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  max-width: 100%;
+  border: none;
+}
+
+.card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+  transform: translateY(-4px) scale(1.02);
 }
 
 .card-title {
   font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: #111;
+  font-size: 1.1rem;
+  color: #222;
+  margin-bottom: 4px;
+  line-height: 1.4;
 }
 
 .card-content {
-  color: #444;
-  margin-bottom: 12px;
-}
-
-.card-badge {
-  color: #fff;
-  border-radius: 8px;
-  padding: 4px 12px;
-  font-weight: 600;
-  font-size: 14px;
-  display: inline-block;
-}
-.card-badge.positive {
-  background: #2196f3;
-}
-.card-badge.negative {
-  background: #e53935;
-}
-.card-badge.neutral {
-  background: #757575;
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
 
 .card-date {
-  margin-left: 12px;
-  color: #888;
-  font-size: 13px;
+  color: #aaa;
+  font-size: 0.95rem;
+  margin-top: 2px;
 }
 
 /* 카드 리스트 flex 스타일 */
 .card-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin: 0 auto 40px auto;
+  max-width: 1400px;
+}
+
+@media (max-width: 900px) {
+  .card-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 600px) {
   .card-list {
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 98vw;
   }
   .card {
     min-width: 90vw;
@@ -244,4 +247,45 @@ a.secondary {
 .title {
   color: #111;
   margin-bottom: 32px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 32px 0 40px 0;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  display: inline-block;
+}
+
+.pagination li a, .pagination li span {
+  display: inline-block;
+  min-width: 36px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  border-radius: 8px;
+  background: #f5f6fa;
+  color: #333;
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0 2px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border: none;
+}
+
+.pagination li.active a, .pagination li.active span {
+  background: #2196f3;
+  color: #fff;
+}
+
+.pagination li a:hover, .pagination li span:hover {
+  background: #e3f0fd;
+  color: #2196f3;
 }

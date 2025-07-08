@@ -97,47 +97,8 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <h1 className={styles.title}>감정분석 뉴스 리스트</h1>
-        <div style={{ marginBottom: 16 }}>
-          <input placeholder="종목명 필터" value={stockFilter} onChange={e => setStockFilter(e.target.value)} style={{ marginRight: 8 }} />
-          <select value={sentimentFilter} onChange={e => setSentimentFilter(e.target.value)} style={{ marginRight: 8 }}>
-            <option value="">감정 전체</option>
-            <option value="positive">긍정</option>
-            <option value="negative">부정</option>
-            <option value="neutral">중립</option>
-          </select>
-          <input type="date" value={dateFilter} onChange={e => setDateFilter(e.target.value)} />
-        </div>
         {/* 차트 */}
-        <div style={{ display: "flex", gap: 32, marginBottom: 24 }}>
-          <div>
-            <b>종목별 뉴스 건수</b>
-            <div style={{ width: 300 }}>
-              {Object.entries(stockCount).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([name, count]) => (
-                <div key={name} style={{ display: "flex", alignItems: "center" }}>
-                  <span style={{ width: 80 }}>{name}</span>
-                  <div style={{ background: "#eee", height: 16, width: 150, margin: "0 8px" }}>
-                    <div style={{ background: "#4a90e2", width: `${count * 10}px`, height: 16 }} />
-                  </div>
-                  <span>{count}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <b>감정별 뉴스 건수</b>
-            <div style={{ width: 200 }}>
-              {Object.entries(sentimentCount).map(([label, count]) => (
-                <div key={label} style={{ display: "flex", alignItems: "center" }}>
-                  <span style={{ width: 60 }}>{label === "positive" ? "긍정" : label === "negative" ? "부정" : "중립"}</span>
-                  <div style={{ background: "#eee", height: 16, width: 80, margin: "0 8px" }}>
-                    <div style={{ background: label === "positive" ? "#4caf50" : label === "negative" ? "#e74c3c" : "#aaa", width: `${count * 10}px`, height: 16 }} />
-                  </div>
-                  <span>{count}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* 기존 차트/필터/통계 영역 전체 삭제 */}
         {loading && <p>불러오는 중...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
         <div className={styles.cardList + " card-list"}>

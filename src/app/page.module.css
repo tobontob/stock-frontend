@@ -178,15 +178,15 @@ a.secondary {
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  padding: 28px 24px 20px 24px;
+  padding: 24px 18px 16px 18px;
   transition: box-shadow 0.2s, transform 0.2s;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: auto;
   min-width: 0;
   max-width: 100%;
-  border: none;
-  margin-bottom: 0;
+  box-sizing: border-box;
 }
 
 .card:hover {
@@ -224,7 +224,8 @@ a.secondary {
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
   margin: 32px auto 48px auto;
-  max-width: 1400px;
+  max-width: 1200px;
+  width: 100%;
 }
 
 @media (max-width: 1200px) {
@@ -242,8 +243,6 @@ a.secondary {
 @media (max-width: 600px) {
   .card-list {
     grid-template-columns: 1fr;
-    gap: 20px;
-    max-width: 98vw;
   }
   .card {
     min-width: 90vw;

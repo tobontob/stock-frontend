@@ -194,7 +194,7 @@ export default function Home() {
                 <b>감정:</b>{" "}
                 {typeof (selected as NewsItem)!.sentiment === "string"
                   ? (selected as NewsItem)!.sentiment
-                  : (selected as NewsItem)!.sentiment?.label ?? ""}
+                  : ((selected as NewsItem)!.sentiment as { label: string })?.label ?? ""}
               </div>
               <div style={{ whiteSpace: "pre-line", marginBottom: 16 }}>{(selected as NewsItem)!.content}</div>
               {(selected as NewsItem)!.link && <a href={(selected as NewsItem)!.link} target="_blank" rel="noopener noreferrer" style={{ color: "#2196f3", textDecoration: "underline" }}>기사 원문보기</a>}

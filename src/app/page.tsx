@@ -1,6 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
+// @ts-ignore
+import { FaArrowUp, FaArrowDown, FaRegDotCircle } from "react-icons/fa";
+// @ts-ignore
+import ReactPaginate from "react-paginate";
 
 interface RelatedStock {
   name: string;
@@ -27,6 +31,8 @@ export default function Home() {
   const [stockFilter, setStockFilter] = useState("");
   const [sentimentFilter, setSentimentFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
+  const PAGE_SIZE = 40;
+  const [page, setPage] = useState(0);
 
   const fetchNews = async () => {
     setLoading(true);
@@ -80,6 +86,8 @@ export default function Home() {
     if (label) sentimentCount[label] = (sentimentCount[label] || 0) + 1;
   });
 
+  const pagedNews = filteredNews.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -127,41 +135,65 @@ export default function Home() {
         </div>
         {loading && <p>불러오는 중...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <table className={styles.table} style={{ width: "100%", marginBottom: 32 }}>
-          <thead>
-            <tr>
-              <th>제목</th>
-              <th>종목</th>
-              <th>방향</th>
-              <th>감정</th>
-              <th>날짜</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredNews.map((item) => (
-              <tr key={item._id} style={{ cursor: "pointer" }} onClick={() => setSelected(item)}>
-                <td>{item.title}</td>
-                <td>{item.related_stocks && item.related_stocks.length > 0 ? item.related_stocks.map(s => s.name).join(", ") : "-"}</td>
-                <td>{item.related_stocks && item.related_stocks.length > 0 ? item.related_stocks.map(s => s.direction).join(", ") : "-"}</td>
-                <td>{typeof item.sentiment === "string" ? item.sentiment : item.sentiment?.label}</td>
-                <td>{item.published ? item.published.replace("T", " ").slice(0, 19) : ""}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className={styles.cardList + " card-list"}>
+          {pagedNews.map((item) => (
+            <div
+              className={styles.card + " card"}
+              key={item._id}
+              onClick={() => setSelected(item)}
+              style={{ cursor: "pointer", flex: "1 1 22%", minWidth: 320, maxWidth: 400 }}
+            >
+              <div className={styles.cardTitle + " card-title"}>{item.title}</div>
+              <div className={styles.cardContent + " card-content"}>
+                {item.related_stocks && item.related_stocks.length > 0 ? (
+                  item.related_stocks.map((s, idx) => (
+                    <span key={s.name + idx} style={{ marginRight: 8, display: "inline-flex", alignItems: "center" }}>
+                      {s.name}
+                      {s.direction === "상승" && <FaArrowUp style={{ color: "#2196f3", marginLeft: 4 }} title="상승" />}
+                      {s.direction === "하락" && <FaArrowDown style={{ color: "#e53935", marginLeft: 4 }} title="하락" />}
+                      {s.direction === "중립" && <FaRegDotCircle style={{ color: "#757575", marginLeft: 4 }} title="중립" />}
+                    </span>
+                  ))
+                ) : (
+                  <span>-</span>
+                )}
+              </div>
+              <div className={styles.cardDate + " card-date"}>{item.published ? item.published.replace("T", " ").slice(0, 19) : ""}</div>
+            </div>
+          ))}
+        </div>
+        <ReactPaginate
+          pageCount={Math.ceil(filteredNews.length / PAGE_SIZE)}
+          pageRangeDisplayed={5}
+          marginPagesDisplayed={1}
+          onPageChange={({ selected }) => setPage(selected)}
+          forcePage={page}
+          containerClassName="pagination"
+          activeClassName="active"
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+        />
         {/* 상세 뉴스 모달 */}
         {selected && (
           <div style={{ position: "fixed", left: 0, top: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.3)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" }} onClick={() => setSelected(null)}>
-            <div style={{ background: "#fff", padding: 32, borderRadius: 8, minWidth: 400, maxWidth: 600 }} onClick={e => e.stopPropagation()}>
-              <h2>{selected.title}</h2>
-              <div style={{ marginBottom: 8, color: "#888" }}>{selected.published ? selected.published.replace("T", " ").slice(0, 19) : ""}</div>
+            <div style={{ background: "#fff", padding: 32, borderRadius: 8, minWidth: 320, maxWidth: 600 }} onClick={e => e.stopPropagation()}>
+              <h2>{(selected as NewsItem).title}</h2>
+              <div style={{ marginBottom: 8, color: "#888" }}>{(selected as NewsItem).published ? (selected as NewsItem).published.replace("T", " ").slice(0, 19) : ""}</div>
               <div style={{ marginBottom: 16 }}>
-                <b>종목:</b> {selected.related_stocks && selected.related_stocks.length > 0 ? selected.related_stocks.map(s => s.name).join(", ") : "-"}<br />
-                <b>방향:</b> {selected.related_stocks && selected.related_stocks.length > 0 ? selected.related_stocks.map(s => s.direction).join(", ") : "-"}<br />
-                <b>감정:</b> {typeof selected.sentiment === "string" ? selected.sentiment : selected.sentiment?.label}
+                <b>종목:</b> {(selected as NewsItem).related_stocks && (selected as NewsItem).related_stocks.length > 0 ? (selected as NewsItem).related_stocks.map((s, idx) => (
+                  <span key={s.name + idx} style={{ marginRight: 8, display: "inline-flex", alignItems: "center" }}>
+                    {s.name}
+                    {s.direction === "상승" && <FaArrowUp style={{ color: "#2196f3", marginLeft: 4 }} title="상승" />}
+                    {s.direction === "하락" && <FaArrowDown style={{ color: "#e53935", marginLeft: 4 }} title="하락" />}
+                    {s.direction === "중립" && <FaRegDotCircle style={{ color: "#757575", marginLeft: 4 }} title="중립" />}
+                  </span>
+                )) : "-"}
+                <br />
+                <b>감정:</b> {typeof (selected as NewsItem).sentiment === "string" ? (selected as NewsItem).sentiment : (selected as NewsItem).sentiment?.label}
               </div>
-              <div style={{ whiteSpace: "pre-line", marginBottom: 16 }}>{selected.content}</div>
-              <a href={selected.link} target="_blank" rel="noopener noreferrer">원문 보기</a>
+              <div style={{ whiteSpace: "pre-line", marginBottom: 16 }}>{(selected as NewsItem).content}</div>
+              {(selected as NewsItem).link && <a href={(selected as NewsItem).link} target="_blank" rel="noopener noreferrer" style={{ color: "#2196f3", textDecoration: "underline" }}>기사 원문보기</a>}
               <div style={{ textAlign: "right", marginTop: 16 }}>
                 <button onClick={() => setSelected(null)}>닫기</button>
               </div>

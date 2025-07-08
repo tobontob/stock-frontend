@@ -229,6 +229,18 @@ a.secondary {
   gap: 24px;
 }
 
+@media (max-width: 600px) {
+  .card-list {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  .card {
+    min-width: 90vw;
+    max-width: 98vw;
+  }
+}
+
 .title {
   color: #111;
   margin-bottom: 32px;

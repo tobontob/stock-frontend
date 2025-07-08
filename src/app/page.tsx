@@ -176,10 +176,10 @@ export default function Home() {
         {selected && (
           <div style={{ position: "fixed", left: 0, top: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.3)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" }} onClick={() => setSelected(null)}>
             <div style={{ background: "#fff", padding: 32, borderRadius: 8, minWidth: 320, maxWidth: 600 }} onClick={e => e.stopPropagation()}>
-              <h2>{(selected as NewsItem).title}</h2>
-              <div style={{ marginBottom: 8, color: "#888" }}>{(selected as NewsItem).published ? (selected as NewsItem).published.replace("T", " ").slice(0, 19) : ""}</div>
+              <h2>{(selected as NewsItem)!.title}</h2>
+              <div style={{ marginBottom: 8, color: "#888" }}>{(selected as NewsItem)!.published ? (selected as NewsItem)!.published.replace("T", " ").slice(0, 19) : ""}</div>
               <div style={{ marginBottom: 16 }}>
-                <b>종목:</b> {(selected as NewsItem).related_stocks && (selected as NewsItem).related_stocks.length > 0 ? (selected as NewsItem).related_stocks.map((s, idx) => (
+                <b>종목:</b> {(selected as NewsItem)!.related_stocks && (selected as NewsItem)!.related_stocks.length > 0 ? (selected as NewsItem)!.related_stocks.map((s, idx) => (
                   <span key={s.name + idx} style={{ marginRight: 8, display: "inline-flex", alignItems: "center" }}>
                     {s.name}
                     {s.direction === "상승" && <FaArrowUp style={{ color: "#2196f3", marginLeft: 4 }} title="상승" />}
@@ -188,10 +188,13 @@ export default function Home() {
                   </span>
                 )) : "-"}
                 <br />
-                <b>감정:</b> {typeof (selected as NewsItem).sentiment === "string" ? (selected as NewsItem).sentiment : (selected as NewsItem).sentiment?.label}
+                <b>감정:</b>{" "}
+                {typeof (selected as NewsItem)!.sentiment === "string"
+                  ? (selected as NewsItem)!.sentiment
+                  : (selected as NewsItem)!.sentiment && (selected as NewsItem)!.sentiment.label}
               </div>
-              <div style={{ whiteSpace: "pre-line", marginBottom: 16 }}>{(selected as NewsItem).content}</div>
-              {(selected as NewsItem).link && <a href={(selected as NewsItem).link} target="_blank" rel="noopener noreferrer" style={{ color: "#2196f3", textDecoration: "underline" }}>기사 원문보기</a>}
+              <div style={{ whiteSpace: "pre-line", marginBottom: 16 }}>{(selected as NewsItem)!.content}</div>
+              {(selected as NewsItem)!.link && <a href={(selected as NewsItem)!.link} target="_blank" rel="noopener noreferrer" style={{ color: "#2196f3", textDecoration: "underline" }}>기사 원문보기</a>}
               <div style={{ textAlign: "right", marginTop: 16 }}>
                 <button onClick={() => setSelected(null)}>닫기</button>
               </div>

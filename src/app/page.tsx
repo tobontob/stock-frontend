@@ -33,7 +33,7 @@ export default function Home() {
   const fetchNews = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/analyzed_news`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/analyzed_news?limit=3000`);
       if (!res.ok) throw new Error("API 요청 실패");
       const data = await res.json();
       setNews(data.news || []);

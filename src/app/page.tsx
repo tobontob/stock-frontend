@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { FaArrowUp, FaArrowDown, FaRegDotCircle } from "react-icons/fa";
+import { FiLoader } from "react-icons/fi";
 import ReactPaginate from "react-paginate";
 
 interface RelatedStock {
@@ -62,9 +63,21 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+      {/* 상단 네비게이션 */}
+      <nav className={styles.navbar}>
+        <div className={styles.navTitle}>AI 금융 뉴스 분석</div>
+      </nav>
       <main className={styles.main}>
         <h1 className={styles.title}>감정분석 뉴스 리스트</h1>
-        {loading && <p>불러오는 중...</p>}
+        {loading && (
+          <div className={styles.loaderWrap}><FiLoader className={styles.loader} /> 불러오는 중...</div>
+        )}
+        {!loading && news.length === 0 && (
+          <div className={styles.emptyWrap}>
+            <div className={styles.emptyIllust}>📰</div>
+            <div className={styles.emptyText}>분석된 뉴스가 없습니다.</div>
+          </div>
+        )}
         <div className={styles.cardList + " card-list"}>
           {pagedNews.map((item) => (
             <div
@@ -76,15 +89,15 @@ export default function Home() {
               <div className={styles.cardContent + " card-content"}>
                 {Array.isArray(item.related_stocks) && item.related_stocks.length > 0 ? (
                   item.related_stocks.map((s, idx) => (
-                    <span key={s.name + idx} style={{ marginRight: 8, display: "inline-flex", alignItems: "center" }}>
+                    <span key={s.name + idx} className={styles.stockBadge}>
                       {s.name}
-                      {s.direction === "상승" && <FaArrowUp style={{ color: "#2196f3", marginLeft: 4 }} title="상승" />}
-                      {s.direction === "하락" && <FaArrowDown style={{ color: "#e53935", marginLeft: 4 }} title="하락" />}
-                      {s.direction === "중립" && <FaRegDotCircle style={{ color: "#757575", marginLeft: 4 }} title="중립" />}
+                      {s.direction === "상승" && <FaArrowUp className={styles.upIcon} title="상승" />}
+                      {s.direction === "하락" && <FaArrowDown className={styles.downIcon} title="하락" />}
+                      {s.direction === "중립" && <FaRegDotCircle className={styles.neutralIcon} title="중립" />}
                     </span>
                   ))
                 ) : (
-                  <span>-</span>
+                  <span className={styles.stockBadge}>-</span>
                 )}
               </div>
               <div className={styles.cardDate + " card-date"}>{item.published?.replace("T", " ").slice(0, 19) ?? ""}</div>
@@ -97,41 +110,36 @@ export default function Home() {
           marginPagesDisplayed={1}
           onPageChange={({ selected }) => setPage(selected)}
           forcePage={page}
-          containerClassName="pagination"
-          activeClassName="active"
+          containerClassName={"pagination " + styles.pagination}
+          activeClassName={styles.active}
           previousLabel={"<"}
           nextLabel={">"}
           breakLabel={"..."}
         />
         {/* 상세 뉴스 모달 */}
         {selected && (
-          <div style={{ position: "fixed", left: 0, top: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.3)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" }} onClick={() => setSelected(null)}>
-            <div style={{ background: "#fff", padding: 32, borderRadius: 8, minWidth: 320, maxWidth: 600 }} onClick={e => e.stopPropagation()}>
-              <h2>{(selected as NewsItem)!.title}</h2>
-              <div style={{ marginBottom: 8, color: "#888" }}>{(selected as NewsItem)!.published?.replace("T", " ").slice(0, 19) ?? ""}</div>
-              <div style={{ marginBottom: 16 }}>
+          <div className={styles.modalOverlay} onClick={() => setSelected(null)}>
+            <div className={styles.modal} onClick={e => e.stopPropagation()}>
+              <button className={styles.modalClose} onClick={() => setSelected(null)}>&times;</button>
+              <h2 className={styles.modalTitle}>{selected.title}</h2>
+              <div className={styles.modalDate}>{selected.published?.replace("T", " ").slice(0, 19) ?? ""}</div>
+              <div className={styles.modalStocks}>
                 <b>종목:</b>{" "}
-                {Array.isArray((selected as NewsItem)!.related_stocks) && (selected as NewsItem)!.related_stocks!.length > 0
-                  ? (selected as NewsItem)!.related_stocks!.map((s, idx) => (
-                      <span key={s.name + idx} style={{ marginRight: 8, display: "inline-flex", alignItems: "center" }}>
+                {Array.isArray(selected.related_stocks) && selected.related_stocks.length > 0
+                  ? selected.related_stocks.map((s, idx) => (
+                      <span key={s.name + idx} className={styles.stockBadge}>
                         {s.name}
-                        {s.direction === "상승" && <FaArrowUp style={{ color: "#2196f3", marginLeft: 4 }} title="상승" />}
-                        {s.direction === "하락" && <FaArrowDown style={{ color: "#e53935", marginLeft: 4 }} title="하락" />}
-                        {s.direction === "중립" && <FaRegDotCircle style={{ color: "#757575", marginLeft: 4 }} title="중립" />}
+                        {s.direction === "상승" && <FaArrowUp className={styles.upIcon} title="상승" />}
+                        {s.direction === "하락" && <FaArrowDown className={styles.downIcon} title="하락" />}
+                        {s.direction === "중립" && <FaRegDotCircle className={styles.neutralIcon} title="중립" />}
                       </span>
                     ))
                   : "-"}
-                <br />
-                <b>감정:</b> {getSentimentLabel((selected as NewsItem)!.sentiment)}
               </div>
-              <div style={{ marginBottom: 16 }}>
-                <b>분석근거:</b> {selected.reason || "분석 근거 데이터 없음"}
-              </div>
-              <div style={{ whiteSpace: "pre-line", marginBottom: 16 }}>{(selected as NewsItem)!.content}</div>
-              {(selected as NewsItem)!.link && <a href={(selected as NewsItem)!.link} target="_blank" rel="noopener noreferrer" style={{ color: "#2196f3", textDecoration: "underline" }}>기사 원문보기</a>}
-              <div style={{ textAlign: "right", marginTop: 16 }}>
-                <button onClick={() => setSelected(null)}>닫기</button>
-              </div>
+              <div className={styles.modalSentiment}><b>감정:</b> {getSentimentLabel(selected.sentiment)}</div>
+              <div className={styles.modalReason}><b>분석근거:</b> {selected.reason || "분석 근거 데이터 없음"}</div>
+              <div className={styles.modalContent}>{selected.content}</div>
+              {selected.link && <a href={selected.link} target="_blank" rel="noopener noreferrer" className={styles.modalLink}>기사 원문보기</a>}
             </div>
           </div>
         )}

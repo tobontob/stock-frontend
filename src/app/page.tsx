@@ -27,7 +27,7 @@ export default function Home() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<NewsItem | null>(null);
-  const PAGE_SIZE = 40;
+  const PAGE_SIZE = 20;
   const [page, setPage] = useState(0);
 
   const fetchNews = async () => {

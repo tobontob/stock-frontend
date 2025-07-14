@@ -78,15 +78,15 @@ export default function Home() {
             <div className={styles.emptyText}>분석된 뉴스가 없습니다.</div>
           </div>
         )}
-        <div className={styles.cardList + " card-list"}>
+        <div className={styles.cardList}>
           {pagedNews.map((item) => (
             <div
-              className={styles.card + " card"}
+              className={styles.card}
               key={item._id}
               onClick={() => setSelected(item)}
             >
-              <div className={styles.cardTitle + " card-title"}>{item.title}</div>
-              <div className={styles.cardContent + " card-content"}>
+              <div className={styles.cardTitle}>{item.title}</div>
+              <div className={styles.cardContent}>
                 {Array.isArray(item.related_stocks) && item.related_stocks.length > 0 ? (
                   item.related_stocks.map((s, idx) => (
                     <span key={s.name + idx} className={styles.stockBadge}>
@@ -100,7 +100,7 @@ export default function Home() {
                   <span className={styles.stockBadge}>-</span>
                 )}
               </div>
-              <div className={styles.cardDate + " card-date"}>{item.published?.replace("T", " ").slice(0, 19) ?? ""}</div>
+              <div className={styles.cardDate}>{item.published?.replace("T", " ").slice(0, 19) ?? ""}</div>
             </div>
           ))}
         </div>
